@@ -39,8 +39,7 @@ def main():
         if gui:
             draw_keypoints(image, features['keypoints'], features['scores'])
             title = f + ' (' + net_name + ', ' + str(num_keypoints) + ' keypoints)'
-            cv2.imshow(title, image)
-            cv2.waitKey()
+            cv2.imwrite(title+'.jpg', image)
 
     f1 = filenames[0]
     for f2 in filenames[1:]:
@@ -50,8 +49,10 @@ def main():
         des2 = list(file_features[f2]['local_descriptors'])
         des1 = np.squeeze(file_features[f1]['local_descriptors'])
         des2 = np.squeeze(file_features[f2]['local_descriptors'])
-        kp1 = [cv2.KeyPoint(p[0], p[1], _size=2) for p in file_features[f1]['keypoints']]
-        kp2 = [cv2.KeyPoint(p[0], p[1], _size=2) for p in file_features[f2]['keypoints']]
+        # print(file_features[f1]['keypoints'])
+        # print(file_features[f1]['keypoints'])
+        kp1 = [cv2.KeyPoint(float(p[0]), float(p[1]), _size=2) for p in file_features[f1]['keypoints']]
+        kp2 = [cv2.KeyPoint(float(p[0]), float(p[1]), _size=2) for p in file_features[f2]['keypoints']]
         img1 = file_features[f1]['image']
         img2 = file_features[f2]['image']
 
@@ -61,9 +62,7 @@ def main():
         match_img = cv2.drawMatches(img1, kp1, img2, kp2, matches, None, flags=2)
         title = os.path.splitext(os.path.basename(f1))[0] + '-' + \
                 os.path.splitext(os.path.basename(f2))[0] + '-' + str(distance)
-        cv2.imshow(title, match_img)
         cv2.imwrite(title + '.jpg', match_img)
-        cv2.waitKey()
 
 def draw_keypoints(image, keypoints, scores):
     upper_score = 0.5

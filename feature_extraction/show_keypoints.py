@@ -49,14 +49,14 @@ def main():
                 ', %d keypoints, %.2f ms (average %.2f ms)' % (num_keypoints, frame_time, total_time / frame_count))
         if args.no_gui: continue
         draw_keypoints(image, features['keypoints'], features['scores'])
-        if args.pause:
-            title = f + ' (' + net_name + ', ' + str(num_keypoints) + ' keypoints)'
-            cv2.imshow(title, image)
-            cv2.waitKey()
-        else:
-            title = net_name
-            cv2.imshow(title, image)
-            cv2.waitKey(1)
+        # if args.pause:
+        title = f + ' (' + net_name + ', ' + str(num_keypoints) + ' keypoints).png'
+        cv2.imwrite(title, image)
+        # cv2.waitKey()
+        # else:
+        #     title = net_name
+        #     cv2.imwrite(title, image)
+        #     cv2.waitKey(1)
 
 def draw_keypoints(image, keypoints, scores):
     upper_score = 0.2   # keypoints with this score or higher will have a red circle
